@@ -1,1 +1,164 @@
-s
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boston Sports Hub: 2009 NBA Rankings</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the Boston feel */
+        :root {
+            --boston-green: #007A33;
+            --boston-gold: #FFC72C;
+            --boston-navy: #1C2D43;
+        }
+
+        /* Use a subtle background image related to sports/court */
+        .sports-background {
+            background-image: url('https://placehold.co/1920x1080/000000/007A33?text=BOSTON+LEGACY');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Style for the main container to add a dark overlay */
+        .content-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        /* Highlight Celtics players with a subtle shadow and background */
+        .celtics-highlight {
+            background-color: rgba(0, 122, 51, 0.2); /* Semi-transparent Green */
+            border-left: 4px solid var(--boston-gold);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Custom scrollbar for aesthetics */
+        .player-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .player-list-container::-webkit-scrollbar-track {
+            background: #1C2D43; /* Dark Navy */
+            border-radius: 10px;
+        }
+        .player-list-container::-webkit-scrollbar-thumb {
+            background: #007A33; /* Boston Green */
+            border-radius: 10px;
+        }
+        .player-list-container::-webkit-scrollbar-thumb:hover {
+            background: #FFC72C; /* Boston Gold */
+        }
+    </style>
+</head>
+<body class="sports-background">
+    <div class="content-overlay">
+        <header class="text-center mb-10 p-4 border-b-4 border-boston-gold">
+            <h1 class="text-5xl font-extrabold text-boston-gold tracking-widest sm:text-6xl">
+                BOSTON LEGACY
+            </h1>
+            <p class="text-xl mt-2 text-gray-200 font-medium sm:text-2xl">
+                2008-2009 NBA Player Rankings - The Hub
+            </p>
+        </header>
+
+        <main class="max-w-4xl mx-auto">
+            <div class="bg-boston-navy p-6 rounded-xl shadow-2xl">
+                <h2 class="text-3xl font-bold mb-6 text-white border-b pb-3 border-gray-600">
+                    Top 35 Players of the 2008-2009 Season
+                </h2>
+
+                <div id="player-list" class="player-list-container space-y-3 max-h-[70vh] overflow-y-auto pr-2">
+                    <!-- Player cards will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Data for the top 35 players of the 2008-2009 NBA season, synthesized from rankings and MVP voting.
+        const top35Players = [
+            { rank: 1, name: "LeBron James", team: "Cavaliers", pos: "SF" },
+            { rank: 2, name: "Dwyane Wade", team: "Heat", pos: "SG" },
+            { rank: 3, name: "Kobe Bryant", team: "Lakers", pos: "SG" },
+            { rank: 4, name: "Dwight Howard", team: "Magic", pos: "C" },
+            { rank: 5, name: "Chris Paul", team: "Hornets", pos: "PG" },
+            { rank: 6, name: "Tim Duncan", team: "Spurs", pos: "PF" },
+            { rank: 7, name: "Dirk Nowitzki", team: "Mavericks", pos: "PF" },
+            { rank: 8, name: "Kevin Garnett", team: "Celtics", pos: "PF" },
+            { rank: 9, name: "Paul Pierce", team: "Celtics", pos: "SF" },
+            { rank: 10, name: "Carmelo Anthony", team: "Nuggets", pos: "SF" },
+            { rank: 11, name: "Brandon Roy", team: "Trail Blazers", pos: "SG" },
+            { rank: 12, name: "Steve Nash", team: "Suns", pos: "PG" },
+            { rank: 13, name: "Deron Williams", team: "Jazz", pos: "PG" },
+            { rank: 14, name: "Tony Parker", team: "Spurs", pos: "PG" },
+            { rank: 15, name: "Yao Ming", team: "Rockets", pos: "C" },
+            { rank: 16, name: "Pau Gasol", team: "Lakers", pos: "PF" },
+            { rank: 17, name: "Chris Bosh", team: "Raptors", pos: "PF" },
+            { rank: 18, name: "Amar'e Stoudemire", team: "Suns", pos: "PF" },
+            { rank: 19, name: "Chauncey Billups", team: "Nuggets", pos: "PG" },
+            { rank: 20, name: "Kevin Durant", team: "Thunder", pos: "SF" },
+            { rank: 21, name: "Manu Ginobili", team: "Spurs", pos: "SG" },
+            { rank: 22, name: "Jason Kidd", team: "Mavericks", pos: "PG" },
+            { rank: 23, name: "Tracy McGrady", team: "Rockets", pos: "SG" },
+            { rank: 24, name: "Joe Johnson", team: "Hawks", pos: "SG" },
+            { rank: 25, name: "Derrick Rose", team: "Bulls", pos: "PG" },
+            { rank: 26, name: "Ray Allen", team: "Celtics", pos: "SG" },
+            { rank: 27, name: "Gilbert Arenas", team: "Wizards", pos: "PG" },
+            { rank: 28, name: "Ron Artest", team: "Lakers", pos: "SF" },
+            { rank: 29, name: "Vince Carter", team: "Magic", pos: "SG" },
+            { rank: 30, name: "Danny Granger", team: "Pacers", pos: "SF" },
+            { rank: 31, name: "Baron Davis", team: "Clippers", pos: "PG" },
+            { rank: 32, name: "Devin Harris", team: "Nets", pos: "PG" },
+            { rank: 33, name: "Ben Gordon", team: "Pistons", pos: "SG" },
+            { rank: 34, name: "Al Horford", team: "Hawks", pos: "C" },
+            { rank: 35, name: "Carlos Boozer", team: "Jazz", pos: "PF" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const playerList = document.getElementById('player-list');
+            
+            // Generate HTML for each player
+            top35Players.forEach(player => {
+                const isCeltics = player.team === "Celtics";
+                
+                // Determine CSS classes, highlighting Celtics players
+                const cardClasses = isCeltics 
+                    ? 'celtics-highlight p-4 rounded-lg flex items-center transition duration-300 hover:bg-opacity-30'
+                    : 'bg-gray-800 p-4 rounded-lg flex items-center transition duration-300 hover:bg-gray-700';
+
+                // Determine rank color for visibility
+                const rankColor = isCeltics ? 'text-boston-gold' : 'text-green-400';
+
+                const playerCard = `
+                    <div class="${cardClasses}">
+                        <!-- Rank Column -->
+                        <div class="w-1/6 sm:w-1/12">
+                            <span class="text-3xl font-black ${rankColor}">${player.rank}</span>
+                        </div>
+                        
+                        <!-- Details Column -->
+                        <div class="w-5/6 sm:w-11/12 flex flex-col sm:flex-row justify-between items-center text-sm sm:text-base">
+                            <div class="w-full sm:w-1/3 text-lg font-bold text-white mb-1 sm:mb-0">
+                                ${player.name}
+                            </div>
+                            <div class="w-full sm:w-1/3 text-gray-300">
+                                <span class="font-semibold">${player.pos}</span> | <span class="italic">${player.team}</span>
+                            </div>
+                            <div class="w-full sm:w-1/3 text-right text-gray-400">
+                                ${isCeltics ? '<span class="text-boston-gold font-bold">★ BOSTON HERO ★</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                playerList.insertAdjacentHTML('beforeend', playerCard);
+            });
+        });
+    </script>
+</body>
+</html>
